@@ -1,16 +1,16 @@
 #include "AchievementManager.h"
 
-AchievementManager::AchievementManager()
+AchievementManager::AchievementManager(Logger* parentLogger)
 {
-
+	logger = parentLogger;
 }
 
-void AchievementManager::AchievementUpdated(AchievementUpdate achievement)
+void AchievementManager::AchievementUpdated(const AchievementUpdate achievement)
 {
-
+	logger->log("Achievement Updated!!!");
 }
 
-void AchievementManager::LoadAchievementsForMod()
+void AchievementManager::LoadAchievementsForMods()
 {
 
 }

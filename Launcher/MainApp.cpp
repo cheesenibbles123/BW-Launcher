@@ -1,4 +1,5 @@
 #include "MainApp.h"
+#include "comLib.h"
 
 MainApp::MainApp()
 {
@@ -9,7 +10,7 @@ MainApp::MainApp()
     isRunning = false;
 	configManager = new ConfigManager();
     logger = new Logger("BWLauncher.log", true);
-    achievementManager = new AchievementManager();
+    achievementManager = new AchievementManager(logger);
 }
 
 void MainApp::SetWindow(HWND newHWnd)
@@ -30,79 +31,6 @@ void MainApp::Destroy()
     isRunning = false;
 }
 
-int getProcId(const wchar_t* target) {
-    DWORD pid = 0;
-    PROCESSENTRY32 pe32;
-    pe32.dwSize = sizeof(PROCESSENTRY32);
-    HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-    bool isClosed = false;
-    do {
-        if (wcscmp(pe32.szExeFile, target) == 0) {
-            CloseHandle(hSnapshot);
-            isClosed = true;
-            pid = pe32.th32ProcessID;
-            break;
-        }
-    } while (Process32Next(hSnapshot, &pe32));
-    if (!isClosed) CloseHandle(hSnapshot);
-    return pid;
-}
-
-static void SetupSocket(MainApp* app)
-{
-    // Clear commands
-    TCHAR buffer[MAX_PATH];
-    GetModuleFileName(NULL, buffer, MAX_PATH);
-    std::wstring wFilePath(&buffer[0]);
-    std::string f(wFilePath.begin(), wFilePath.end());
-    std::string folderPath = f.substr(0, f.find_last_of("\\/"));
-
-    const std::string filePath = folderPath + '/' + "comFile.txt";
-
-    std::fstream comConnection;
-    comConnection.open(filePath);
-    comConnection.close();
-
-    comConnection.open(filePath, std::ios::in);
-    app->logger->log(filePath);
-    if (comConnection.fail()) return app->logger->log("Unable to open comFile");
-    app->logger->log("Started listening for com updates");
-
-    std::string input;
-
-    while (app->isRunning)
-    {
-        //app->logger->log("starting sweep");
-        std::getline(comConnection, input, '\n');
-        //app->logger->log("got line" + input);
-        if (input.length() > 0)
-        {
-            //app->logger->log("has length");
-            std::vector<std::string> inputs = Lib::SplitString(input);
-            const ComInputType type = ComInputMap[inputs[0]];
-            switch (type)
-            {
-            case ComInputType::Achievement:
-            {
-                AchievementUpdate info;
-                info.ID = inputs[1];
-                info.newScore = std::stoi(inputs[2]);
-                info.setComplete = std::stoi(inputs[3]) == 1;
-
-                app->achievementManager->AchievementUpdated(info);
-                //app->logger->log("Got update for: " + inputs[1]);
-                break;
-            }
-            default:
-                //app->logger->log("Got invalid ComType: " + inputs[0]);
-                break;
-            }
-        }
-        //app->logger->log("Sleeping");
-        Sleep(100);
-    }
-}
-
 void MainApp::LaunchGame()
 {
     if (!SteamAPI_Init())
@@ -112,27 +40,35 @@ void MainApp::LaunchGame()
 
     system("cmd.exe /C start steam://rungameid/420290");
 
-    char dll[] = "dllInject.dll";
+    std::vector<std::string> dlls = {"dllInject.dll", "GameClientPipes.dll"};
     char dllFullPath[MAX_PATH] = { 0 };
-    GetFullPathNameA(dll, MAX_PATH, dllFullPath, NULL);
-    bool gotProcessId = false;
-    int counter = 0;
 
-    while (!gotProcessId && counter < 100)
+    for (size_t i = 0; i < dlls.size(); i++)
     {
-        if (InjectDll(getProcId(L"Blackwake.exe"), dllFullPath)) {
-            logger->log("DLL injected successfully");
-            gotProcessId = true;
-            isRunning = true;
+        bool gotProcessId = false;
+        int counter = 0;
+        GetFullPathNameA(dlls.at(i).c_str(), MAX_PATH, dllFullPath, NULL);
 
-            std::thread t(SetupSocket, this);
-            break;
+        while (!gotProcessId && counter < 100)
+        {
+            Sleep(100);
+            if (InjectDll(Lib::GetProcessId(L"Blackwake.exe"), dllFullPath)) {
+                logger->log(dlls.at(i) + " injected successfully");
+                gotProcessId = true;
+                isRunning = true;
+            }
+            else {
+                counter++;
+                logger->log(dlls.at(i) + " injection failed, running attempt: " + std::to_string(counter));
+            }
         }
-        else {
-            counter++;
-            logger->log("DLL injection failed, running attempt: " + std::to_string(counter));
-        }
-        Sleep(100);
+
+    }
+
+    if (isRunning)
+    {
+        std::thread t(ComLib::SetupComSocket, this);
+        t.detach();
     }
 }
 

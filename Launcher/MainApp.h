@@ -1,26 +1,13 @@
 #pragma once
 #include "ConfigManager.h"
-#include "SteamHeaders/steam_api.h"
+#include "AchievementManager.h"
 #include "Logger.h"
+#include "Lib.h"
+#include "SteamHeaders/steam_api.h"
 #include <windows.h>
 #include <stdio.h>
 #include <tchar.h>
 #include <thread>
-#include <tlhelp32.h>
-#include "Lib.h"
-#include "AchievementManager.h"
-
-static enum ComInputType
-{
-	Achievement,
-	Stat
-};
-
-static std::unordered_map<std::string, ComInputType> ComInputMap =
-{
-	{"Achievement", Achievement},
-	{"Stat", Stat},
-};
 
 class MainApp
 {

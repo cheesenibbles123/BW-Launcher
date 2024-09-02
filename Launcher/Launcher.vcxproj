@@ -22,8 +22,9 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{2147fc13-490c-4bf2-8281-d56e049c3265}</ProjectGuid>
-    <RootNamespace>Launcher</RootNamespace>
+    <RootNamespace>BWLauncher</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>BWLauncher</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -131,13 +132,13 @@
   <ItemGroup>
     <ClCompile Include="AchievementManager.cpp" />
     <ClCompile Include="ConfigManager.cpp" />
-    <ClCompile Include="Lib.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AchievementManager.h" />
+    <ClInclude Include="comLib.h" />
     <ClInclude Include="ConfigManager.h" />
     <ClInclude Include="Lib.h" />
     <ClInclude Include="Logger.h" />

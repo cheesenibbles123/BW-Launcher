@@ -144,7 +144,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case BUTTON_FILEPATH:
             break;
         case BUTTON_GAME:
-            mainApp->LaunchGame();
+            if (!mainApp->isRunning) mainApp->LaunchGame();
             break;
         default:
             break;
