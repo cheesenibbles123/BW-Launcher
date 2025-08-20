@@ -16,11 +16,20 @@
     <Filter Include="Header Files\Steam">
       <UniqueIdentifier>{c2c47b3e-9036-4c31-817d-42de3bc05a3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GUI">
+      <UniqueIdentifier>{cf4323ed-52c4-4924-ba57-c381e5adf1a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{bc72ca8f-c6f6-4ec8-8077-f406ac6921d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Steam">
+      <UniqueIdentifier>{d0705501-2018-455a-91ce-f67df115f8b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Types">
+      <UniqueIdentifier>{096838a3-b8b3-4023-ac82-d6d1d1bb70af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConfigManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -33,11 +42,20 @@
     <ClCompile Include="AchievementManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CommunicationHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI/MainWxApp.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI/MainFrame.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="wxButtonWithIcon.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ConfigManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -191,6 +209,24 @@
     <ClInclude Include="comLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CommunicationHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModConfig.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="AchievementConfig.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI/MainWxApp.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI/MainFrame.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="wxButtonWithIcon.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Launcher.rc">
@@ -202,18 +238,18 @@
       <Filter>Header Files\Steam</Filter>
     </None>
     <None Include="steam_api.dll">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Steam</Filter>
     </None>
     <None Include="steam_api64.dll">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Steam</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="steam_api.lib">
-      <Filter>Source Files</Filter>
-    </Library>
     <Library Include="steam_api64.lib">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Steam</Filter>
+    </Library>
+    <Library Include="steam_api.lib">
+      <Filter>Source Files\Steam</Filter>
     </Library>
   </ItemGroup>
 </Project>

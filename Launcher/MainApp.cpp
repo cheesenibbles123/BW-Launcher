@@ -1,5 +1,5 @@
 #include "MainApp.h"
-#include "comLib.h"
+#include <istreamwrapper.h>
 
 MainApp::MainApp()
 {
@@ -10,22 +10,13 @@ MainApp::MainApp()
     isRunning = false;
 	configManager = new ConfigManager();
     logger = new Logger("BWLauncher.log", true);
+    communicationHandler = new CommunicationHandler(logger);
     achievementManager = new AchievementManager(logger);
-}
-
-void MainApp::SetWindow(HWND newHWnd)
-{
-    hWnd = newHWnd;
-}
-
-void MainApp::RefreshWindow()
-{
-    InvalidateRect(hWnd, NULL, TRUE);
-    UpdateWindow(hWnd);
 }
 
 void MainApp::Destroy()
 {
+    return; // Don't think about it too much ;)
 	configManager->Destroy();
     logger->Destroy();
     isRunning = false;
@@ -35,12 +26,12 @@ void MainApp::LaunchGame()
 {
     if (!SteamAPI_Init())
     {
-        //return logger->log("Fatal Error - Steam must be running to play this game (SteamAPI_Init() failed).\n");
+        // return logger->log("Fatal Error - Steam must be running to play this game (SteamAPI_Init() failed).\n");
     }
 
     system("cmd.exe /C start steam://rungameid/420290");
 
-    std::vector<std::string> dlls = {"dllInject.dll", "GameClientPipes.dll"};
+    std::vector<std::string> dlls = {"dllMain.dll"};
     char dllFullPath[MAX_PATH] = { 0 };
 
     for (size_t i = 0; i < dlls.size(); i++)
@@ -49,9 +40,10 @@ void MainApp::LaunchGame()
         int counter = 0;
         GetFullPathNameA(dlls.at(i).c_str(), MAX_PATH, dllFullPath, NULL);
 
-        while (!gotProcessId && counter < 100)
+        while (!gotProcessId && counter < 300)
         {
-            Sleep(100);
+            Sleep(300);
+
             if (InjectDll(Lib::GetProcessId(L"Blackwake.exe"), dllFullPath)) {
                 logger->log(dlls.at(i) + " injected successfully");
                 gotProcessId = true;
@@ -62,14 +54,95 @@ void MainApp::LaunchGame()
                 logger->log(dlls.at(i) + " injection failed, running attempt: " + std::to_string(counter));
             }
         }
-
     }
 
-    if (isRunning)
+    /*if (isRunning)
     {
         std::thread t(ComLib::SetupComSocket, this);
         t.detach();
+    }*/
+}
+
+std::vector<ModConfig> MainApp::loadMods()
+{
+    std::vector<ModConfig> mods = std::vector<ModConfig>();
+    wxFileName f(wxStandardPaths::Get().GetExecutablePath());
+    const std::string appPath(f.GetPath() + "/Mods/");
+    logger->log(appPath);
+    const std::filesystem::path modsFolderFilePath = appPath;
+    if (!std::filesystem::exists(modsFolderFilePath))
+    {
+        std::filesystem::create_directory(modsFolderFilePath);
     }
+    modsFolderFilePath / "/";
+
+    rapidjson::Document jsonObj{};
+
+    for (const std::filesystem::directory_entry& dirEntry : std::filesystem::recursive_directory_iterator(modsFolderFilePath))
+    {
+        if (dirEntry.is_directory())
+        {
+            const std::filesystem::path configFilePath = (appPath + dirEntry.path().filename().string() + "/config.json");
+            if (!std::filesystem::exists(configFilePath))
+            {
+                logger->log("Missing config.json in " + configFilePath.string());
+                continue;
+            }
+
+            std::ifstream ifs{ (configFilePath) };
+            if (!ifs.is_open())
+            {
+                logger->log("Unable to open config file in " + configFilePath.string());
+                continue;
+            }
+
+            rapidjson::IStreamWrapper isw(ifs);
+            jsonObj.ParseStream(isw);
+
+            ModConfig modData = {};
+            if (jsonObj.HasParseError())
+            {
+                logger->log("Error with json format, please check the config file in " + configFilePath.string());
+            }
+
+            if (jsonObj.HasMember("ModName") && jsonObj["ModName"].IsString())
+            {
+                modData.ModName = jsonObj["ModName"].GetString();
+            }
+            else
+            {
+                logger->log("Config is missing a correct ModName entry in " + configFilePath.string());
+                continue;
+            }
+
+            if (jsonObj.HasMember("ModAuthor") && jsonObj["ModAuthor"].IsString())
+            {
+                modData.ModAuthor = jsonObj["ModAuthor"].GetString();
+            }
+            else
+            {
+                logger->log("Config is missing a correct ModAuthor entry in " + configFilePath.string());
+                continue;
+            }
+
+            if (jsonObj.HasMember("ModIconPath") && jsonObj["ModIconPath"].IsString())
+            {
+                modData.ModIconPath = jsonObj["ModIconPath"].GetString();
+            }
+            else
+            {
+                logger->log("Config is missing a correct ModIconPath entry in " + configFilePath.string());
+                continue;
+            }
+            logger->log(std::string("Loaded mod: ") + jsonObj["ModName"].GetString());
+            mods.push_back(std::move(modData));
+        }
+        else {
+            logger->log(dirEntry.path().string() + " is not a mod directory!");
+        }
+    }
+
+    return mods;
 }
 
 bool MainApp::InjectDll(DWORD processID, const char* dllPath)

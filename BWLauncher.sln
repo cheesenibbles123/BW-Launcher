@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Launcher", "Launcher\Launcher.vcxproj", "{2147FC13-490C-4BF2-8281-D56E049C3265}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BWLauncher", "Launcher\Launcher.vcxproj", "{2147FC13-490C-4BF2-8281-D56E049C3265}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dllMain", "dllMain\dllMain.vcxproj", "{9381A2B8-B87C-4FFC-BEE9-4659C496CB5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameClientPipes", "GameClientPipes\GameClientPipes.csproj", "{349DA8F4-29B3-4D80-AF53-2541A4A6E1D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModLoader", "ModLoader\ModLoader.csproj", "{7FD5E834-0DB6-4C87-8ABA-B08E358F2667}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,18 +43,18 @@ Global
 		{9381A2B8-B87C-4FFC-BEE9-4659C496CB5F}.Release|x64.Build.0 = Release|x64
 		{9381A2B8-B87C-4FFC-BEE9-4659C496CB5F}.Release|x86.ActiveCfg = Release|Win32
 		{9381A2B8-B87C-4FFC-BEE9-4659C496CB5F}.Release|x86.Build.0 = Release|Win32
-		{349DA8F4-29B3-4D80-AF53-2541A4A6E1D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{349DA8F4-29B3-4D80-AF53-2541A4A6E1D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{349DA8F4-29B3-4D80-AF53-2541A4A6E1D0}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{349DA8F4-29B3-4D80-AF53-2541A4A6E1D0}.Debug|x64.Build.0 = Debug|Any CPU
-		{349DA8F4-29B3-4D80-AF53-2541A4A6E1D0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{349DA8F4-29B3-4D80-AF53-2541A4A6E1D0}.Debug|x86.Build.0 = Debug|Any CPU
-		{349DA8F4-29B3-4D80-AF53-2541A4A6E1D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{349DA8F4-29B3-4D80-AF53-2541A4A6E1D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{349DA8F4-29B3-4D80-AF53-2541A4A6E1D0}.Release|x64.ActiveCfg = Release|Any CPU
-		{349DA8F4-29B3-4D80-AF53-2541A4A6E1D0}.Release|x64.Build.0 = Release|Any CPU
-		{349DA8F4-29B3-4D80-AF53-2541A4A6E1D0}.Release|x86.ActiveCfg = Release|Any CPU
-		{349DA8F4-29B3-4D80-AF53-2541A4A6E1D0}.Release|x86.Build.0 = Release|Any CPU
+		{7FD5E834-0DB6-4C87-8ABA-B08E358F2667}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FD5E834-0DB6-4C87-8ABA-B08E358F2667}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FD5E834-0DB6-4C87-8ABA-B08E358F2667}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7FD5E834-0DB6-4C87-8ABA-B08E358F2667}.Debug|x64.Build.0 = Debug|Any CPU
+		{7FD5E834-0DB6-4C87-8ABA-B08E358F2667}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7FD5E834-0DB6-4C87-8ABA-B08E358F2667}.Debug|x86.Build.0 = Debug|Any CPU
+		{7FD5E834-0DB6-4C87-8ABA-B08E358F2667}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FD5E834-0DB6-4C87-8ABA-B08E358F2667}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FD5E834-0DB6-4C87-8ABA-B08E358F2667}.Release|x64.ActiveCfg = Release|Any CPU
+		{7FD5E834-0DB6-4C87-8ABA-B08E358F2667}.Release|x64.Build.0 = Release|Any CPU
+		{7FD5E834-0DB6-4C87-8ABA-B08E358F2667}.Release|x86.ActiveCfg = Release|Any CPU
+		{7FD5E834-0DB6-4C87-8ABA-B08E358F2667}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
