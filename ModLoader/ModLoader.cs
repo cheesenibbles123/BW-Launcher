@@ -11,7 +11,7 @@ namespace ModLoader
     {
         public static ModLoader Instance { get; internal set; }
 
-        private static readonly string dllpath = new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
+        private static string dllpath = "";
 
         public Logger Logger;
 
@@ -23,7 +23,7 @@ namespace ModLoader
         {
             get
             {
-                return Path.GetDirectoryName(dllpath);
+                return dllpath ?? Path.GetDirectoryName(dllpath);
             }
         }
 
@@ -51,6 +51,13 @@ namespace ModLoader
             }
         }
 
+        /*
+         * INTERNAL ONLY
+         */
+        public static void SetPath(string path)
+        {
+            dllpath = path;
+        }
         public Dictionary<FileInfo, List<Type>> GetAllMods()
         {
             return new Dictionary<FileInfo, List<Type>>(allMods);
@@ -59,6 +66,7 @@ namespace ModLoader
         public ModLoader(Logger logger)
         {
             Logger = logger;
+            CommunicationPipes.init();
         }
 
         public bool IsLoaded(FileInfo mod)
@@ -88,7 +96,6 @@ namespace ModLoader
 
                 }
             }
-
         }
 
         public void AddModFile(FileInfo file)

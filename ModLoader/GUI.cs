@@ -140,16 +140,7 @@ namespace ModLoader
             foreach (FileInfo fileInfo in allmods.Keys)
             {
                 num++;
-                if (UnityEngine.GUI.Toggle(new Rect(5f, (float)(num * 25), 150f, 25f), ModLoader.Instance.IsLoaded(fileInfo), fileInfo.Name) && !ModLoader.Instance.IsLoaded(fileInfo))
-                {
-                    ModLoader.Instance.Load(fileInfo);
-                    RefreshMods();
-                }
-                else if (ModLoader.Instance.IsLoaded(fileInfo))
-                {
-                    ModLoader.Instance.Unload(fileInfo);
-                    RefreshMods();
-                }
+                UnityEngine.GUI.Toggle(new Rect(5f, (float)(num * 25), 150f, 25f), ModLoader.Instance.IsLoaded(fileInfo), fileInfo.Name);
 
                 if (UnityEngine.GUI.Button(new Rect(155f, (float)(num * 25), 100f, 25f), "Reload"))
                 {
@@ -165,6 +156,19 @@ namespace ModLoader
                     {
                         gameObject.BroadcastMessage("OnSettingsMenu");
                     }
+                }
+
+                if (UnityEngine.GUI.Button(new Rect(355f, (float)(num * 25), 100f, 25f), "Toggle"))
+                {
+                    if (ModLoader.Instance.IsLoaded(fileInfo))
+                    {
+                        ModLoader.Instance.Unload(fileInfo);
+                    } else
+                    {
+                        ModLoader.Instance.Load(fileInfo);
+                    }
+
+                    RefreshMods();
                 }
             }
 
