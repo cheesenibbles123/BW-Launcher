@@ -35,7 +35,7 @@ public:
 	void LaunchGame();
 
 	std::vector<ModConfig> loadMods();
-
+	std::thread communicationThread;
 private:
 	HWND hWnd;
 

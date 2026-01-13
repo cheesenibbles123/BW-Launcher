@@ -3,14 +3,11 @@
 
 MainApp::MainApp()
 {
-    //if (SteamAPI_RestartAppIfNecessary(480)) // Replace with your App ID
-    //{
-    //    //return 1;
-    //}
     isRunning = false;
 	configManager = new ConfigManager();
     logger = new Logger("BWLauncher.log", true);
     communicationHandler = new CommunicationHandler(logger);
+    communicationHandler->SetupSocket(communicationHandler);
     achievementManager = new AchievementManager(logger);
 }
 
@@ -20,6 +17,7 @@ void MainApp::Destroy()
 	configManager->Destroy();
     logger->Destroy();
     isRunning = false;
+    communicationHandler->Destroy();
 }
 
 void MainApp::LaunchGame()
