@@ -19,8 +19,11 @@ class CommunicationHandler
 public:
 	CommunicationHandler(Logger* logger);
 	void Destroy();
-	int SetupSocket();
+	int SetupSocket(CommunicationHandler* handler);
+
 private:
 	Logger* logger;
+	SOCKET listenSocket;
+	SOCKET clientSocket;
 };
 
