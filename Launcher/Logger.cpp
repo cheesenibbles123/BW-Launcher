@@ -28,6 +28,7 @@ Logger::Logger(std::string fileName, bool wipeFile)
 
 void Logger::log(std::string text)
 {
+    std::cout << getCurrentDateTime() << '\t' << text << '\n';
     fileStream = std::ofstream(logFileTarget.c_str(), std::ios_base::out | std::ios_base::app);
     fileStream << getCurrentDateTime() << '\t' << text << '\n';
     fileStream.close();
