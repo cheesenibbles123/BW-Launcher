@@ -227,11 +227,9 @@
     <ClInclude Include="wxButtonWithIcon.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Launcher.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SteamHeaders\steam_api.json">
@@ -251,5 +249,15 @@
     <Library Include="steam_api.lib">
       <Filter>Source Files\Steam</Filter>
     </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Images\APP_ICON.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -1,9 +1,12 @@
 #include "./MainFrame.h"
 #include "../wxButtonWithIcon.h"
+#include "../resource.h"
 
 MainFrame::MainFrame(const wxString& title): wxFrame(nullptr, wxID_ANY, title)
 {
 	mainApp = new MainApp();
+	SetIcons(wxICON(APP_ICON));
+
 	wxPanel* panel = new wxPanel(this);
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 

@@ -172,6 +172,7 @@
     <ClInclude Include="GUI/MainFrame.h" />
     <ClInclude Include="GUI/MainWxApp.h" />
     <ClInclude Include="ModConfig.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SteamHeaders\isteamapps.h" />
     <ClInclude Include="SteamHeaders\isteamappticket.h" />
     <ClInclude Include="SteamHeaders\isteamclient.h" />
@@ -220,9 +221,6 @@
     <ClInclude Include="wxButtonWithIcon.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Launcher.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="SteamHeaders\steam_api.json" />
     <None Include="steam_api.dll" />
     <None Include="steam_api64.dll" />
@@ -230,6 +228,12 @@
   <ItemGroup>
     <Library Include="steam_api.lib" />
     <Library Include="steam_api64.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Images\APP_ICON.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
