@@ -143,7 +143,6 @@ static DWORD LoadModloader(LPVOID)
     return 0;
 }
 
-
 BOOL APIENTRY DllMain(HMODULE h, DWORD r, LPVOID)
 {
     if (r == DLL_PROCESS_ATTACH) {
