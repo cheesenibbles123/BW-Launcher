@@ -1,7 +1,7 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by Resource.rc
-
+#define BW_CSHARP 104
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
