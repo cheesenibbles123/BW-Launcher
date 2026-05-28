@@ -1,10 +1,13 @@
 ﻿using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace ModLoader
 {
-    public static class Loader
+    internal static class Loader
     {
+        private static string[] modsToLoad = null;
+
         public static void Load(string path)
         {
             Tools.MainThreadDispatcher.RunOnMainThread(() =>
@@ -28,9 +31,12 @@ namespace ModLoader
 
                 foreach (FileInfo fileInfo in modLoader.GetAllMods().Keys)
                 {
-                    if (fileInfo.Name[0] != '_')
+                    if (fileInfo.Name[0] != '_' && modsToLoad != null ? modsToLoad.Contains(fileInfo.Name) : true)
                     {
                         modLoader.Load(fileInfo);
+                    } else
+                    {
+                        modLogger.DebugLog("Skipping mod " + fileInfo.Name + " as it is not within the array of mods to load");
                     }
                 }
 
@@ -38,6 +44,11 @@ namespace ModLoader
                 gameObject.AddComponent<GUI>();
                 UnityEngine.Object.DontDestroyOnLoad(gameObject);
             });
+        }
+
+        internal static void setModsToLoad(string[] mods)
+        {
+            modsToLoad = mods;
         }
     }
 }

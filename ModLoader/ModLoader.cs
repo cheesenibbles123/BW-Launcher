@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -66,7 +65,7 @@ namespace ModLoader
         public ModLoader(Logger logger)
         {
             Logger = logger;
-            CommunicationPipes.init();
+            Tools.CommunicationPipes.init();
         }
 
         public bool IsLoaded(FileInfo mod)

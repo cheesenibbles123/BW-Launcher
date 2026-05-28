@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace ModLoader
 {
@@ -36,7 +34,6 @@ namespace ModLoader
 
         public void Log(string output)
         {
-            Console.WriteLine(prefix + output);
             Logs.Add(prefix + output);
 
             if (!string.IsNullOrEmpty(file))
