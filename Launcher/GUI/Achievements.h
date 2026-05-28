@@ -8,6 +8,8 @@
 #include "../MainApp.h"
 #include <map>
 
+const wxColor PROGRESS_BAR_COLOUR = wxColor(122, 2, 2);
+
 class AchievementsWindow: public wxFrame
 {
 private:

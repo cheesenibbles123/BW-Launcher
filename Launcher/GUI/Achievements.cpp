@@ -120,6 +120,11 @@ void AchievementsWindow::CreateAchievementSection(ModConfig mod)
 		wxGauge* guage = new wxGauge(scrollBox, wxID_ANY, achievement->goalScore, wxDefaultPosition, wxDefaultSize, wxGA_HORIZONTAL);
 		guage->SetValue(achievement->currentScore);
 		guage->SetSize(wxSize(50, -1));
+
+		// Looks like this doesn't work as wxWidgets is hard-set to use system colours
+		// Leaving this here incase I switch to another lib
+		guage->SetForegroundColour(PROGRESS_BAR_COLOUR);
+
 		achieveContainer->Add(guage, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 5);
 
 		std::string progressText = std::to_string(achievement->currentScore) + " / " + std::to_string(achievement->goalScore);
