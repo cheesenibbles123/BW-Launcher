@@ -1,5 +1,7 @@
 #pragma once
 #include <wx/wx.h>
+#include <wx/wrapsizer.h>
+#include <wx/statline.h>
 #include "MainWindow.h"
 #include "Custom Components/StyledButton.h"
 #include "../AchievementManager.h"

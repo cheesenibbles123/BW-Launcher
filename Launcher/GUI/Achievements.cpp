@@ -47,8 +47,9 @@ void AchievementsWindow::Populate()
 		CreateAchievementSection(mod);
 	}
 
-	Layout();
+	mainSizer->Layout();
 	mainSizer->SetSizeHints(this);
+	Layout();
 	SetClientSize(mainApp->configManager->windowWidth, mainApp->configManager->windowHeight);
 }
 
@@ -63,17 +64,25 @@ void AchievementsWindow::CreateAchievementSection(ModConfig mod)
 	modPanel->SetBackgroundColour(MAIN_WINDOW_CONTENT_BACKGROUND_COLOUR);
 	wxBoxSizer* modContainer = new wxBoxSizer(wxVERTICAL);
 
+
 	/* MOD HEADER START */
-	wxBoxSizer* titleContainer = new wxBoxSizer(wxHORIZONTAL);
 	wxStaticText* modName = new wxStaticText(modPanel, wxID_ANY, mod.ModName);
 	modName->SetForegroundColour(MAIN_BUTTON_TEXT_COLOUR);
-	modName->SetFont(modName->GetFont().Bold());
-	titleContainer->Add(modName);
+	wxFont font = modName->GetFont();
+	font.Bold();
+	font.SetPointSize(16);
+	modName->SetFont(font);
+	modContainer->Add(modName, 0, wxALL, 5);
 
-	modContainer->Add(titleContainer, 0, wxLEFT | wxTOP | wxBOTTOM, 5);
+	wxStaticLine* line = new wxStaticLine(modPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
+	modContainer->Add(line, 0, wxEXPAND | wxALL, 5);
 	/* MOD HEADER END */
 
-	wxWrapSizer* achievementShowcase = new wxWrapSizer(wxHORIZONTAL);
+	wxScrolledWindow* scrollBox = new wxScrolledWindow(modPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL);
+	scrollBox->SetMinSize(wxSize(-1, 200));
+	scrollBox->SetScrollRate(5, 5);
+
+	wxWrapSizer* achievementShowcase = new wxWrapSizer(wxHORIZONTAL, wxEXTEND_LAST_ON_EACH_LINE);
 	const size_t numAchievements = mod.Achievements.size();
 	for (size_t i = 0; i < numAchievements; i++)
 	{
@@ -97,33 +106,39 @@ void AchievementsWindow::CreateAchievementSection(ModConfig mod)
 				image = image.Scale(ACHIEVEMENT_ICON_SIZE, ACHIEVEMENT_ICON_SIZE, wxIMAGE_QUALITY_HIGH);
 				bitmap = wxBitmap(image);
 			}
+
 			imageCache.emplace(achievementImagesFolder + imageToUse, bitmap);
 		}
 		
-		wxStaticBitmap* modIcon = new wxStaticBitmap(modPanel, wxID_ANY, bitmap);
-		achieveContainer->Add(modIcon, 0, wxALIGN_CENTER_HORIZONTAL, 5);
+		wxStaticBitmap* modIcon = new wxStaticBitmap(scrollBox, wxID_ANY, bitmap);
+		achieveContainer->Add(modIcon, 1, wxALIGN_CENTER_HORIZONTAL | wxALL);
 
-		wxStaticText* achievementName = new wxStaticText(modPanel, wxID_ANY, achievement->DisplayText);
+		wxStaticText* achievementName = new wxStaticText(scrollBox, wxID_ANY, achievement->DisplayText);
 		achievementName->SetForegroundColour(MAIN_TEXT_COLOUR);
-		achieveContainer->Add(achievementName, 0, wxALIGN_CENTER_HORIZONTAL);
+		achieveContainer->Add(achievementName, 0, wxALIGN_CENTER_HORIZONTAL | wxALL);
 
-		wxGauge* guage = new wxGauge(modPanel, wxID_ANY, achievement->goalScore);
+		wxGauge* guage = new wxGauge(scrollBox, wxID_ANY, achievement->goalScore, wxDefaultPosition, wxDefaultSize, wxGA_HORIZONTAL);
 		guage->SetValue(achievement->currentScore);
-		const wxSize size = guage->GetSize();
-		guage->SetSize(size.GetWidth() / 2, size.GetHeight());
-		achieveContainer->Add(guage, 0, wxALIGN_CENTER_HORIZONTAL);
+		guage->SetSize(wxSize(50, -1));
+		achieveContainer->Add(guage, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 5);
 
 		std::string progressText = std::to_string(achievement->currentScore) + " / " + std::to_string(achievement->goalScore);
-		wxStaticText* achievementProgress = new wxStaticText(modPanel, wxID_ANY, progressText);
+		wxStaticText* achievementProgress = new wxStaticText(scrollBox, wxID_ANY, progressText);
 		achievementProgress->SetForegroundColour(MAIN_TEXT_COLOUR);
-		achieveContainer->Add(achievementProgress, 0, wxALIGN_CENTER_HORIZONTAL);
+		achieveContainer->Add(achievementProgress, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 5);
 
-		achievementShowcase->Add(achieveContainer, 0, 0, 10);
+		achievementShowcase->Add(achieveContainer, 1, 0, 5);
 	}
 
-	modContainer->Add(achievementShowcase, 0, 0, 10);
-	modPanel->SetAutoLayout(true);
+	achievementShowcase->AddSpacer(1);
+	scrollBox->SetSizer(achievementShowcase);
+	scrollBox->Layout();
+	achievementShowcase->Fit(scrollBox);
+
+	modContainer->Add(scrollBox, 1, wxALL | wxEXPAND, 5);
+
 	modPanel->SetSizer(modContainer);
-	
-	mainSizer->Add(modPanel, 0, wxEXPAND, 10);
+	modPanel->Layout();
+	modContainer->Fit(modPanel);
+	mainSizer->Add(modPanel, 0, wxALL | wxEXPAND, 10);
 }

@@ -16,7 +16,14 @@ bool WindowManager::OnInit() {
 }
 
 int WindowManager::OnExit() {
-	mainWindow->DestroyFrame();
+	if (mainWindow) {
+		mainWindow->DestroyFrame();
+	}
+
+	if (achievementsWindow) {
+		achievementsWindow->Close();
+	}
+
 	return true;
 }
 
@@ -27,6 +34,6 @@ void WindowManager::ShowAchievementsWindow()
 	achievementsWindow->SetMainApp(mainApp);
 	achievementsWindow->SetAchievementManager(mainApp->achievementManager);
 	achievementsWindow->Populate();
+	achievementsWindow->SetSize(mainApp->configManager->windowWidth, mainApp->configManager->windowHeight);
 	achievementsWindow->Show();
 }
-

@@ -82,6 +82,7 @@ void MainWindow::Populate()
 		}
 
 		wxCheckBox* isEnabledCheckbox = new wxCheckBox(modListEntryPanel, wxID_ANY, "");
+		isEnabledCheckbox->SetValue(true);
 		isEnabledCheckbox->SetBackgroundColour(CHECKBOX_BACKGROUND_COLOUR);
 		modListEntry->Add(isEnabledCheckbox, 0, wxALIGN_CENTER_VERTICAL);
 		
