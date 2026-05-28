@@ -4,7 +4,7 @@
 #define DEFAULT_BUFLEN 512
 constexpr auto DEFAULT_PORT = "27015";
 
-void awaitResponse(CommunicationHandler* handler, SOCKET clientSocket, Logger* logger)
+void awaitResponse(AchievementManager* achievementManager, SOCKET clientSocket, Logger* logger)
 {
     char buffer[4096];
     while (true)
@@ -25,15 +25,26 @@ void awaitResponse(CommunicationHandler* handler, SOCKET clientSocket, Logger* l
         }
 
         std::string message = std::string(buffer, bytesReceived);
-        logger->log("Received: " + std::string(buffer, bytesReceived));
+        logger->log("Received: " + message);
 
-        int openBracket = message.find("[");
-        int closeBracket = message.find("]");
-        std::string target = message.substr(openBracket, closeBracket);
+        const std::vector<std::string> params = Lib::SplitCommunicationString(message, ']', 1, 1);
+        if (params.size() >= 1) {
+            const std::string target = params.front();
+
+            if (target == "ACHIEVEMENT") {
+                if (params.size() < 3) {
+                    logger->log("Error, not enough parameters passed when attempting to update achivement!");
+                    continue;
+                }
+
+                const AchievementUpdate update = AchievementUpdate(params[1], params[2], std::stoi(params[3]));
+                achievementManager->AchievementUpdated(update);
+            }
+        }
     }
 }
 
-void awaitClient(CommunicationHandler* handler, SOCKET listenSocket, Logger* logger)
+void awaitClient(AchievementManager* achievementManager, SOCKET listenSocket, Logger* logger)
 {
     sockaddr_in client;
     int clientSize = sizeof(client);
@@ -49,13 +60,15 @@ void awaitClient(CommunicationHandler* handler, SOCKET listenSocket, Logger* log
     logger->log("Connected to client socket");
     closesocket(listenSocket);
 
-    std::thread thread(&awaitResponse, handler, clientSocket, logger);
+    std::thread thread(&awaitResponse, achievementManager, clientSocket, logger);
     thread.detach();
 }
 
-CommunicationHandler::CommunicationHandler(Logger* inLogger)
+CommunicationHandler::CommunicationHandler(Logger* inLogger, AchievementManager* inAchievementManager)
 {
     logger = inLogger;
+    achievementManager = inAchievementManager;
+
     WSADATA wsData;
     WORD ver = MAKEWORD(2, 2);
 
@@ -72,7 +85,7 @@ void CommunicationHandler::Destroy()
     closesocket(clientSocket);
 }
 
-int CommunicationHandler::SetupSocket(CommunicationHandler* handler)
+int CommunicationHandler::SetupSocket()
 {
     listenSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (listenSocket == INVALID_SOCKET)
@@ -109,7 +122,7 @@ int CommunicationHandler::SetupSocket(CommunicationHandler* handler)
 
     logger->log("Finished setting up listen socket");
 
-    std::thread thread(&awaitClient, handler, listenSocket, logger);
+    std::thread thread(&awaitClient, achievementManager, listenSocket, logger);
     thread.detach();
 
     return 0;

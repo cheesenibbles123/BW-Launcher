@@ -73,15 +73,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ExternalIncludePath>C:\Libraries\rapidjson\include\rapidjson;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>C:\Libraries;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ExternalIncludePath>C:\Libraries\rapidjson\include\rapidjson;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>C:\Libraries;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <LibraryPath>C:\Libraries;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <LibraryPath>C:\Libraries;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -90,6 +94,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(WXWIDGETS)\include\msvc;$(WXWIDGETS)\include;${RAPIDJSON}\rapidjson;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -106,6 +111,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(WXWIDGETS)\include\msvc;$(WXWIDGETS)\include;${RAPIDJSON}\rapidjson;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,7 +127,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(WXWIDGETS)\include\msvc;$(WXWIDGETS)\include;${RAPIDJSON}\rapidjson;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -139,7 +145,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(WXWIDGETS)\include\msvc;$(WXWIDGETS)\include;${RAPIDJSON}\rapidjson;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -152,25 +158,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AchievementManager.cpp" />
+    <ClCompile Include="GUI/Achievements.cpp" />
     <ClCompile Include="CommunicationHandler.cpp" />
     <ClCompile Include="ConfigManager.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MainApp.cpp" />
-    <ClCompile Include="GUI/MainFrame.cpp" />
-    <ClCompile Include="GUI/MainWxApp.cpp" />
+    <ClCompile Include="GUI/MainWindow.cpp" />
+    <ClCompile Include="GUI/WindowManager.cpp" />
     <ClCompile Include="wxButtonWithIcon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AchievementConfig.h" />
     <ClInclude Include="AchievementManager.h" />
-    <ClInclude Include="comLib.h" />
+    <ClInclude Include="GUI/Achievements.h" />
     <ClInclude Include="CommunicationHandler.h" />
     <ClInclude Include="ConfigManager.h" />
     <ClInclude Include="Lib.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MainApp.h" />
-    <ClInclude Include="GUI/MainFrame.h" />
-    <ClInclude Include="GUI/MainWxApp.h" />
+    <ClInclude Include="GUI/MainWindow.h" />
+    <ClInclude Include="GUI/WindowManager.h" />
     <ClInclude Include="ModConfig.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SteamHeaders\isteamapps.h" />
@@ -234,6 +241,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Images\APP_ICON.ico" />
+    <Image Include="..\Images\bwCsharp.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

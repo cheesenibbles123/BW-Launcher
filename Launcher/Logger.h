@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 
+// TODO: Make this work when threaded (100% overkill, but would be nice to not freeze up the launcher when alot of data comes in)
 class Logger
 {
 public:

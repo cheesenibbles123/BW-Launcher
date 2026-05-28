@@ -27,19 +27,19 @@ public:
 	Logger* logger;
 	HANDLE remoteThread;
 	PROCESS_INFORMATION gameProcessInfo;
-	bool isRunning;
 
 	MainApp();
 
 	void Destroy();
 	void LaunchGame();
 
-	std::vector<ModConfig> loadMods();
+	std::vector<ModConfig> GetMods();
 	std::thread communicationThread;
 private:
 	HWND hWnd;
+	std::vector<ModConfig> loadedMods;
 
+	std::vector<ModConfig> loadMods();
 	bool InjectDll(DWORD processID, const char* dllPath);
-	// void SetupSocket();
 };
 

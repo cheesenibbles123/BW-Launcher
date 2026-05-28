@@ -23,6 +23,7 @@ Logger::Logger(std::string fileName, bool wipeFile)
         std::ofstream file(logFileTarget.c_str());
         file.close();
     }
+
     log("Starting logger");
 }
 

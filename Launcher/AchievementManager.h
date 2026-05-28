@@ -5,47 +5,19 @@
 #include "Logger.h"
 #include <iostream>
 #include <fstream>
-
-static enum AchievementType
-{
-	DEFAULT,
-	STAGED
-};
-
-struct AchievementInfo
-{
-	std::string ID;
-	AchievementType type;
-	int currentScore;
-	int goalScore;
-	bool isComplete;
-
-	std::string completeImageUrl;
-	std::string incompleteImageUrl;
-};
-
-typedef struct AchievementUpdate
-{
-	std::string ID {};
-	int newScore = 0;
-	bool setComplete = false;
-	AchievementUpdate(std::string newId, int newNewScore, bool newSetComplete)
-	{
-		ID = newId;
-		newScore = newNewScore;
-		setComplete = newSetComplete;
-	}
-} AchievementUpdate;
+#include "Types/ModConfig.h"
+#include "Types/AchievementConfig.h"
 
 class AchievementManager
 {
 public:
 	AchievementManager(Logger* parentLogger);
 	void AchievementUpdated(const AchievementUpdate achievement);
+	void SetModsReference(const std::vector<ModConfig>* mods);
+	void Test();
 private:
+	void SaveAchievementsToDisk(const std::string modID, const ModConfig* config);
 	Logger* logger;
-	std::vector<AchievementInfo> achievements;
-
-	void LoadAchievementsForMods();
+	const std::vector<ModConfig>* mods;
 };
 

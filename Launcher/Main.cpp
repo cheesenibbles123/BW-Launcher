@@ -146,7 +146,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case BUTTON_FILEPATH:
             break;
         case BUTTON_GAME:
-            if (!mainApp->isRunning) mainApp->LaunchGame();
+            if (mainApp) mainApp->LaunchGame();
             break;
         default:
             break;
@@ -166,7 +166,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         RedBrush = CreateSolidBrush(RGB(255, 0, 0));
         GreenBrush = CreateSolidBrush(RGB(0, 255, 0));
 
-        SelectObject(ps.hdc, mainApp->isRunning ? GreenBrush : RedBrush);
+        //SelectObject(ps.hdc, mainApp->isRunning ? GreenBrush : RedBrush);
         Ellipse(ps.hdc, 265, 5, 295, 35);
         //
 
