@@ -7,8 +7,13 @@
 void MainWindow::CreateModListEntry(wxPanel* panel, wxBoxSizer* parentSizer, ModConfig mod, wxColor background)
 {
 	wxPanel* modListEntryPanel = new wxPanel(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-		modListEntryPanel->SetBackgroundColour(background);
+	modListEntryPanel->SetBackgroundColour(background);
+	wxBoxSizer* modListEntryWrapper = new wxBoxSizer(wxVERTICAL);
+	modListEntryWrapper->Add(0, 5, 0, wxALL);
+
 	wxBoxSizer* modListEntry = new wxBoxSizer(wxHORIZONTAL);
+	modListEntryWrapper->Add(modListEntry, 1, wxEXPAND | wxALL);
+	modListEntry->Add(15, 0, 0, wxALL);
 
 	wxCheckBox* isEnabledCheckbox = new wxCheckBox(modListEntryPanel, wxID_ANY, "");
 	isEnabledCheckbox->Bind(wxEVT_CHECKBOX,
@@ -32,8 +37,6 @@ void MainWindow::CreateModListEntry(wxPanel* panel, wxBoxSizer* parentSizer, Mod
 	modAuthorBtn->SetForegroundColour(MAIN_TEXT_COLOUR);
 	modAuthorBtn->SetFont(DynamicFont(DYNAMIC_DEFAULT_FONT_SIZE));
 	modListEntry->Add(modAuthorBtn, 1, wxALIGN_CENTER_VERTICAL);
-
-	modListEntry->AddStretchSpacer(1);
 	/*
 	StyledButton* modAchievesDeeplinkBtn = new StyledButton(modListEntryPanel, wxID_ANY, "Achievements");
 	modAchievesDeeplinkBtn->SetFont(DynamicFont(DYNAMIC_DEFAULT_FONT_SIZE));
@@ -43,7 +46,8 @@ void MainWindow::CreateModListEntry(wxPanel* panel, wxBoxSizer* parentSizer, Mod
 	modStatsDeeplinkBtn->SetFont(DynamicFont(DYNAMIC_DEFAULT_FONT_SIZE));
 	modListEntry->Add(modStatsDeeplinkBtn, 0, wxALL);
 	*/
-	modListEntryPanel->SetSizer(modListEntry);
+	modListEntryWrapper->Add(0, 5, 0, wxALL);
+	modListEntryPanel->SetSizer(modListEntryWrapper);
 	modListEntryPanel->Layout();
 	parentSizer->Add(modListEntryPanel, 0, wxEXPAND);
 }
@@ -71,10 +75,11 @@ void MainWindow::Populate()
 	wxPanel* panel = new wxPanel(this);
 	panel->SetBackgroundColour(MAIN_WINDOW_BACKGROUND_COLOUR);
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
+	mainSizer->Add(0, 15, 0);
 
 	// HEADER START
 	wxBoxSizer* headerSizer = new wxBoxSizer(wxHORIZONTAL);
-
+	headerSizer->Add(15, 0, 0);
 	wxStaticText* headerText = new wxStaticText(panel, wxID_ANY, "BW Custom Launcher");
 	headerText->SetFont(DynamicFont(DYNAMIC_HEADER_FONT_SIZE));
 	headerText->SetForegroundColour(MAIN_BUTTON_TEXT_COLOUR);
@@ -86,16 +91,21 @@ void MainWindow::Populate()
 	settingsButton->SetFont(DynamicFont(DYNAMIC_DEFAULT_FONT_SIZE));
 	headerSizer->Add(settingsButton, 0, wxALIGN_CENTER_VERTICAL);
 
+	headerSizer->Add(15, 0, 0);
 	mainSizer->Add(headerSizer, 0, wxEXPAND);
+	mainSizer->Add(0, 15, 0);
 	// HEADER END
 
 	// NAVIGATION BAR START
 	wxBoxSizer* navigationBarSizer = new wxBoxSizer(wxHORIZONTAL);
+	navigationBarSizer->Add(15, 0, 0);
 
 	StyledButton* achievementsButton = new StyledButton(panel, wxID_ANY, "Achievements");
 	achievementsButton->Bind(wxEVT_BUTTON, &WindowManager::ShowAchievementsWindow, this->windowManager);
 	achievementsButton->SetFont(DynamicFont(DYNAMIC_DEFAULT_FONT_SIZE));
 	navigationBarSizer->Add(achievementsButton);
+
+	navigationBarSizer->Add(15, 0, 0);
 
 	StyledButton* statsButton = new StyledButton(panel, wxID_ANY, "Stats");
 	statsButton->Bind(wxEVT_BUTTON, &WindowManager::ShowStatsWindow, this->windowManager);
@@ -108,8 +118,10 @@ void MainWindow::Populate()
 	launchGameButton->SetFont(DynamicFont(DYNAMIC_DEFAULT_FONT_SIZE));
 	launchGameButton->Bind(wxEVT_BUTTON, &MainWindow::OnLaunchGameSelected, this);
 	navigationBarSizer->Add(launchGameButton);
+	navigationBarSizer->Add(15, 0, 0);
 
 	mainSizer->Add(navigationBarSizer, 0, wxEXPAND);
+	mainSizer->Add(0, 15, 0, wxEXPAND);
 	// NAVIGATION BAR END
 
 	// MOD LIST START
