@@ -120,7 +120,7 @@ void AchievementsWindow::CreateAchievementSection(ModConfig mod)
 		wxStaticText* achievementName = new wxStaticText(namePanel, wxID_ANY, achievement->DisplayText, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER_HORIZONTAL);
 		achievementName->Wrap(50);
 		achievementName->SetForegroundColour(MAIN_TEXT_COLOUR);
-		achievementName->SetFont(wxFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
+		achievementName->SetFont(DynamicFont(14));
 		sizer->Add(achievementName, 0, wxALIGN_CENTER_HORIZONTAL);
 
 		sizer->Add(0, 0, 1, wxEXPAND, 5);
