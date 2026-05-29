@@ -50,7 +50,6 @@ void AchievementsWindow::Populate()
 	mainSizer->Layout();
 	mainSizer->SetSizeHints(this);
 	Layout();
-	SetClientSize(mainApp->configManager->windowWidth, mainApp->configManager->windowHeight);
 }
 
 void AchievementsWindow::SetAchievementManager(AchievementManager* inAchievementManager)
@@ -77,9 +76,10 @@ void AchievementsWindow::CreateAchievementSection(ModConfig mod)
 	wxStaticLine* line = new wxStaticLine(modPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
 	modContainer->Add(line, 0, wxEXPAND | wxALL, 5);
 	/* MOD HEADER END */
+	modContainer->Add(0, 10, 0, wxEXPAND, 5);
 
-	wxScrolledWindow* scrollBox = new wxScrolledWindow(modPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL);
-	scrollBox->SetMinSize(wxSize(-1, 200));
+	wxScrolledWindow* scrollBox = new wxScrolledWindow(modPanel, wxID_ANY, wxDefaultPosition, wxSize(500, 300), wxVSCROLL);
+	scrollBox->ShowScrollbars(wxSHOW_SB_NEVER, wxSHOW_SB_DEFAULT);
 	scrollBox->SetScrollRate(5, 5);
 
 	wxWrapSizer* achievementShowcase = new wxWrapSizer(wxHORIZONTAL, wxEXTEND_LAST_ON_EACH_LINE);
@@ -113,21 +113,27 @@ void AchievementsWindow::CreateAchievementSection(ModConfig mod)
 		wxStaticBitmap* modIcon = new wxStaticBitmap(scrollBox, wxID_ANY, bitmap);
 		achieveContainer->Add(modIcon, 1, wxALIGN_CENTER_HORIZONTAL | wxALL);
 
-		achieveContainer->Add(0, 15, 0, wxEXPAND, 5);
+		wxPanel* namePanel = new wxPanel(scrollBox, wxID_ANY, wxDefaultPosition, wxSize(-1, 30));
+		wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+		sizer->Add(0, 0, 1, wxEXPAND, 5);
 
-		wxStaticText* achievementName = new wxStaticText(scrollBox, wxID_ANY, achievement->DisplayText);
+		wxStaticText* achievementName = new wxStaticText(namePanel, wxID_ANY, achievement->DisplayText, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER_HORIZONTAL);
 		achievementName->Wrap(50);
 		achievementName->SetForegroundColour(MAIN_TEXT_COLOUR);
 		achievementName->SetFont(wxFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
-		achieveContainer->Add(achievementName, 0, wxALIGN_CENTER_HORIZONTAL);
+		sizer->Add(achievementName, 0, wxALIGN_CENTER_HORIZONTAL);
 
-		achieveContainer->Add(0, 10, 0, wxEXPAND, 5);
+		sizer->Add(0, 0, 1, wxEXPAND, 5);
+
+		namePanel->SetSizer(sizer);
+		namePanel->Layout();
+		achieveContainer->Add(namePanel, 1, wxEXPAND);
 
 		StyledGauge* guage = new StyledGauge(scrollBox, wxID_ANY, achievement->goalScore, true, wxDefaultPosition, wxSize(120, 36), wxGA_HORIZONTAL);
 		guage->SetValue(achievement->currentScore);
 
 		achieveContainer->Add(guage, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 5);
-		achievementShowcase->Add(achieveContainer, 1, 0, 5);
+		achievementShowcase->Add(achieveContainer, 0, wxALIGN_LEFT | wxALL, 5);
 	}
 
 	achievementShowcase->AddSpacer(1);
@@ -135,7 +141,7 @@ void AchievementsWindow::CreateAchievementSection(ModConfig mod)
 	scrollBox->Layout();
 	achievementShowcase->Fit(scrollBox);
 
-	modContainer->Add(scrollBox, 1, wxALL | wxEXPAND, 5);
+	modContainer->Add(scrollBox, 0, wxALL | wxEXPAND, 5);
 
 	modPanel->SetSizer(modContainer);
 	modPanel->Layout();
