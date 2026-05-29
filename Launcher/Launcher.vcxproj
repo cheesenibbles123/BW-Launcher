@@ -165,6 +165,7 @@
     <ClCompile Include="MainApp.cpp" />
     <ClCompile Include="GUI/MainWindow.cpp" />
     <ClCompile Include="GUI/WindowManager.cpp" />
+    <ClCompile Include="GUI/StatsWindow.cpp" />
     <ClCompile Include="wxButtonWithIcon.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +179,7 @@
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="GUI/MainWindow.h" />
     <ClInclude Include="GUI/WindowManager.h" />
+    <ClCompile Include="GUI/StatsWindow.h" />
     <ClInclude Include="ModConfig.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SteamHeaders\isteamapps.h" />

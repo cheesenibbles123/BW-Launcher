@@ -78,7 +78,7 @@ void AchievementsWindow::CreateAchievementSection(ModConfig mod)
 	/* MOD HEADER END */
 	modContainer->Add(0, 10, 0, wxEXPAND, 5);
 
-	wxScrolledWindow* scrollBox = new wxScrolledWindow(modPanel, wxID_ANY, wxDefaultPosition, wxSize(500, 300), wxVSCROLL);
+	wxScrolledWindow* scrollBox = new wxScrolledWindow(modPanel, wxID_ANY, wxDefaultPosition, wxSize(500, 280), wxVSCROLL);
 	scrollBox->ShowScrollbars(wxSHOW_SB_NEVER, wxSHOW_SB_DEFAULT);
 	scrollBox->SetScrollRate(5, 5);
 

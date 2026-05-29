@@ -29,6 +29,5 @@ public:
 	void SetMainApp(MainApp* inMainApp);
 private:
 	void OnLaunchGameSelected(wxCommandEvent& evt);
-	void OpenAchievementsWindow(wxCommandEvent& event);
 };
 

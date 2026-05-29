@@ -18,7 +18,6 @@ bool WindowManager::OnInit() {
 	mainApp = new MainApp();
 
 	mainWindow = new MainWindow("BW Mod Launcher", this);
-	mainWindow->CenterOnScreen();
 	mainWindow->SetMainApp(mainApp);
 	mainWindow->Populate();
 	SetInitialWindowSize(mainWindow);
@@ -39,13 +38,21 @@ int WindowManager::OnExit() {
 	return true;
 }
 
-void WindowManager::ShowAchievementsWindow()
+void WindowManager::ShowAchievementsWindow(wxCommandEvent& event)
 {
 	achievementsWindow = new AchievementsWindow("Achievements");
-	achievementsWindow->CenterOnScreen();
 	achievementsWindow->SetMainApp(mainApp);
 	achievementsWindow->SetAchievementManager(mainApp->achievementManager);
 	achievementsWindow->Populate();
 	SetInitialWindowSize(achievementsWindow);
 	achievementsWindow->Show();
+}
+
+void WindowManager::ShowStatsWindow(wxCommandEvent& event)
+{
+	statsWindow = new StatsWindow("Stats");
+	statsWindow->SetMainApp(mainApp);
+	statsWindow->Populate();
+	SetInitialWindowSize(statsWindow);
+	statsWindow->Show();
 }

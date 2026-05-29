@@ -5,6 +5,7 @@
 #include "MainWindow.h"
 #include "Custom Components/StyledButton.h"
 #include "Custom Components/StyledGuage.h"
+#include "Custom Components/DynamicFont.h"
 #include "../AchievementManager.h"
 #include "../MainApp.h"
 #include <map>
