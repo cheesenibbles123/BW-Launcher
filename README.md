@@ -1,4 +1,4 @@
-Simple hobby made launcher to allow easy modloading and add some simple functionality for mods
+Simple hobby made launcher to allow easy modloading and add some simple functionality for mods (Currently only works on windows, linux & mac TBD)
 
 Built for Blackwake: https://store.steampowered.com/app/420290/Blackwake/
 
