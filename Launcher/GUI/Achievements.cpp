@@ -70,7 +70,7 @@ void AchievementsWindow::CreateAchievementSection(ModConfig mod)
 	modName->SetForegroundColour(MAIN_BUTTON_TEXT_COLOUR);
 	wxFont font = modName->GetFont();
 	font.Bold();
-	font.SetPointSize(16);
+	font.SetPointSize(20);
 	modName->SetFont(font);
 	modContainer->Add(modName, 0, wxALL, 5);
 
@@ -113,25 +113,20 @@ void AchievementsWindow::CreateAchievementSection(ModConfig mod)
 		wxStaticBitmap* modIcon = new wxStaticBitmap(scrollBox, wxID_ANY, bitmap);
 		achieveContainer->Add(modIcon, 1, wxALIGN_CENTER_HORIZONTAL | wxALL);
 
+		achieveContainer->Add(0, 15, 0, wxEXPAND, 5);
+
 		wxStaticText* achievementName = new wxStaticText(scrollBox, wxID_ANY, achievement->DisplayText);
+		achievementName->Wrap(50);
 		achievementName->SetForegroundColour(MAIN_TEXT_COLOUR);
-		achieveContainer->Add(achievementName, 0, wxALIGN_CENTER_HORIZONTAL | wxALL);
+		achievementName->SetFont(wxFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
+		achieveContainer->Add(achievementName, 0, wxALIGN_CENTER_HORIZONTAL);
 
-		wxGauge* guage = new wxGauge(scrollBox, wxID_ANY, achievement->goalScore, wxDefaultPosition, wxDefaultSize, wxGA_HORIZONTAL);
+		achieveContainer->Add(0, 10, 0, wxEXPAND, 5);
+
+		StyledGauge* guage = new StyledGauge(scrollBox, wxID_ANY, achievement->goalScore, true, wxDefaultPosition, wxSize(120, 36), wxGA_HORIZONTAL);
 		guage->SetValue(achievement->currentScore);
-		guage->SetSize(wxSize(50, -1));
-
-		// Looks like this doesn't work as wxWidgets is hard-set to use system colours
-		// Leaving this here incase I switch to another lib
-		guage->SetForegroundColour(PROGRESS_BAR_COLOUR);
 
 		achieveContainer->Add(guage, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 5);
-
-		std::string progressText = std::to_string(achievement->currentScore) + " / " + std::to_string(achievement->goalScore);
-		wxStaticText* achievementProgress = new wxStaticText(scrollBox, wxID_ANY, progressText);
-		achievementProgress->SetForegroundColour(MAIN_TEXT_COLOUR);
-		achieveContainer->Add(achievementProgress, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 5);
-
 		achievementShowcase->Add(achieveContainer, 1, 0, 5);
 	}
 

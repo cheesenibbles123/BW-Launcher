@@ -4,11 +4,10 @@
 #include <wx/statline.h>
 #include "MainWindow.h"
 #include "Custom Components/StyledButton.h"
+#include "Custom Components/StyledGuage.h"
 #include "../AchievementManager.h"
 #include "../MainApp.h"
 #include <map>
-
-const wxColor PROGRESS_BAR_COLOUR = wxColor(122, 2, 2);
 
 class AchievementsWindow: public wxFrame
 {
