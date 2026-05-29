@@ -41,9 +41,8 @@ void StatsWindow::CreateAchievementSection(ModConfig mod)
 	/* MOD HEADER START */
 	wxStaticText* modName = new wxStaticText(modPanel, wxID_ANY, mod.ModName);
 	modName->SetForegroundColour(MAIN_BUTTON_TEXT_COLOUR);
-	wxFont font = modName->GetFont();
+	DynamicFont font = DynamicFont(20);
 	font.Bold();
-	font.SetPointSize(20);
 	modName->SetFont(font);
 	modContainer->Add(modName, 0, wxALL, 5);
 

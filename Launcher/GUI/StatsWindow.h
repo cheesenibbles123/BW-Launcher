@@ -5,7 +5,7 @@
 #include "../MainApp.h"
 #include "MainWindow.h"
 #include "Custom Components/StyledButton.h"
-
+#include "Custom Components/DynamicFont.h"
 
 class StatsWindow : public wxFrame
 {
