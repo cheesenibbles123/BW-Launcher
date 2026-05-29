@@ -241,6 +241,25 @@ void MainApp::LaunchGame()
     }
 }
 
+void MainApp::SetLoadStatusForMod(std::string modId, bool enabledState)
+{
+    enabledMods[modId] = enabledState;
+
+    const wxFileName f(wxStandardPaths::Get().GetExecutablePath());
+    const std::string appPath(f.GetPath() + "/ModsEnabled.txt");
+
+    std::string fileContent;
+
+    const size_t numMods = loadedMods.size();
+    for (size_t i = 0; i < numMods; i++) {
+        fileContent += loadedMods[i].ModName + "=" + (enabledMods[loadedMods[i].ModName] ? "1" : "0") + "\n";
+    }
+
+    std::ofstream ofs(appPath);
+    ofs << fileContent;
+    ofs.close();
+}
+
 std::vector<ModConfig> MainApp::GetMods()
 {
     if (loadedMods.size() < 1) {
@@ -276,6 +295,7 @@ std::vector<ModConfig> MainApp::loadMods()
             {
                 std::vector<AchievementInfo*> achievements = LoadAchievementsFromJson(appPath + dirEntry.path().filename().string(), logger);
                 mod.Achievements = std::move(achievements);
+                enabledMods.emplace(mod.ModName, true);
                 mods.push_back(std::move(mod));
             }
         }

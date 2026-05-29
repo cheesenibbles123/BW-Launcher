@@ -4,13 +4,18 @@
 #include "Custom Components/DynamicFont.h"
 #include "../resource.h"
 
-void CreateModListEntry(wxPanel* panel, wxBoxSizer* parentSizer, ModConfig mod, wxColor background)
+void MainWindow::CreateModListEntry(wxPanel* panel, wxBoxSizer* parentSizer, ModConfig mod, wxColor background)
 {
 	wxPanel* modListEntryPanel = new wxPanel(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 		modListEntryPanel->SetBackgroundColour(background);
 	wxBoxSizer* modListEntry = new wxBoxSizer(wxHORIZONTAL);
 
 	wxCheckBox* isEnabledCheckbox = new wxCheckBox(modListEntryPanel, wxID_ANY, "");
+	isEnabledCheckbox->Bind(wxEVT_CHECKBOX,
+		[this, mod, isEnabledCheckbox](wxCommandEvent& evt) {
+			mainApp->SetLoadStatusForMod(mod.ModName, isEnabledCheckbox->GetValue());
+		}
+	);
 	isEnabledCheckbox->SetValue(true);
 	isEnabledCheckbox->SetBackgroundColour(CHECKBOX_BACKGROUND_COLOUR);
 	modListEntry->Add(isEnabledCheckbox, 0, wxALIGN_CENTER_VERTICAL);

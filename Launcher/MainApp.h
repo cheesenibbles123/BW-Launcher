@@ -9,6 +9,7 @@
 #include <tchar.h>
 #include <thread>
 #include <vector>
+#include <map>
 #include "Types/ModConfig.h"
 #include <filesystem>
 #include <document.h>
@@ -33,10 +34,13 @@ public:
 	void Destroy();
 	void LaunchGame();
 
+	void SetLoadStatusForMod(std::string modId, bool enabledState);
+
 	std::vector<ModConfig> GetMods();
 	std::thread communicationThread;
 private:
 	HWND hWnd;
+	std::map<std::string, bool> enabledMods;
 	std::vector<ModConfig> loadedMods;
 
 	std::vector<ModConfig> loadMods();

@@ -1,13 +1,11 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace ModLoader
 {
     internal static class Loader
     {
-        private static string[] modsToLoad = null;
-
         public static void Load(string path)
         {
             Tools.MainThreadDispatcher.RunOnMainThread(() =>
@@ -29,9 +27,11 @@ namespace ModLoader
                 ModLoader.Instance = modLoader;
                 modLoader.RefreshModFiles();
 
+                List<string> modsToLoad = GetModsToLoad();
+
                 foreach (FileInfo fileInfo in modLoader.GetAllMods().Keys)
                 {
-                    if (fileInfo.Name[0] != '_' && modsToLoad != null ? modsToLoad.Contains(fileInfo.Name) : true)
+                    if (fileInfo.Name[0] != '_' && modsToLoad.Contains(fileInfo.Name.Split('.')[0]))
                     {
                         modLoader.Load(fileInfo);
                     } else
@@ -46,9 +46,37 @@ namespace ModLoader
             });
         }
 
-        internal static void setModsToLoad(string[] mods)
+        static List<string> GetModsToLoad()
         {
-            modsToLoad = mods;
+            List<string> modsToLoad = new List<string>();
+
+            string file = ModLoader.FolderPath + "/ModsEnabled.txt";
+            if (!File.Exists(file))
+            {
+                Debug.Log("Error loading config path at " + file);
+            }
+
+            string[] allLines = File.ReadAllLines(file);
+            char splitCharacter = '=';
+
+            for (int i = 0; i < allLines.Length; i++)
+            {
+                if (allLines[i].Contains("="))
+                {
+                    string[] line = allLines[i].Split(splitCharacter);
+
+                    if (line.Length == 2)
+                    {
+                        if (line[1] == "1")
+                        {
+                            modsToLoad.Add(line[0]);
+                        }
+                    }
+                }
+            }
+
+            Debug.Log("Mods loaded: " + modsToLoad.Count);
+            return modsToLoad;
         }
     }
 }
