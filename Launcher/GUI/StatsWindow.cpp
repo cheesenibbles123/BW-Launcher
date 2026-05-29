@@ -62,23 +62,29 @@ void StatsWindow::CreateAchievementSection(ModConfig mod)
 		AchievementInfo* achievement = mod.Achievements.at(i);
 		wxBoxSizer* statContainer = new wxBoxSizer(wxHORIZONTAL);
 
-		wxStaticText* statName = new wxStaticText(scrollBox, wxID_ANY, achievement->DisplayText);
+		wxStaticText* statName = new wxStaticText(scrollBox, wxID_ANY, achievement->ID);
 		statName->SetForegroundColour(MAIN_TEXT_COLOUR);
-		statContainer->Add(statName, 0, wxALL, 5);
+		statName->SetFont(DynamicFont(13));
+		statContainer->Add(statName, 1, wxALL | wxEXPAND, 5);
 
 		wxStaticText* statValue = new wxStaticText(scrollBox, wxID_ANY, std::to_string(achievement->currentScore));
 		statValue->SetForegroundColour(MAIN_TEXT_COLOUR);
-		statContainer->Add(statValue, 0, wxALL, 5);
+		statValue->SetFont(DynamicFont(13));
+		statContainer->Add(statValue, 1, wxALL | wxEXPAND, 5);
 
-		statShowcase->Add(statContainer, 0, wxALIGN_LEFT | wxALL, 5);
+		statShowcase->Add(statContainer, 1, wxALL | wxEXPAND, 5);
+
+		if (i != numAchievements - 1) {
+			wxStaticLine* line = new wxStaticLine(scrollBox, wxID_ANY, wxDefaultPosition, wxSize(-1, 1), wxLI_HORIZONTAL);
+			statShowcase->Add(line, 0, wxALL | wxEXPAND);
+		}
 	}
 
-	statShowcase->AddSpacer(1);
 	scrollBox->SetSizer(statShowcase);
 	scrollBox->Layout();
 	statShowcase->Fit(scrollBox);
 
-	modContainer->Add(scrollBox, 0, wxALL | wxEXPAND, 5);
+	modContainer->Add(scrollBox, 1, wxALL | wxEXPAND, 5);
 
 	modPanel->SetSizer(modContainer);
 	modPanel->Layout();
