@@ -18,7 +18,7 @@ void AchievementManager::AchievementUpdated(const AchievementUpdate achievementU
 
 	const size_t size = mods->size();
 	bool foundAchievement = false;
-	const ModConfig* config;
+	const ModConfig* config = NULL;
 
 	for (size_t i = 0; i < size; i++) {
 		config = &mods->at(i);
@@ -40,7 +40,7 @@ void AchievementManager::AchievementUpdated(const AchievementUpdate achievementU
 		}
 	}
 
-	if (foundAchievement) {
+	if (foundAchievement && config) {
 		SaveAchievementsToDisk(achievementUpdate.modID, config);
 	}
 }

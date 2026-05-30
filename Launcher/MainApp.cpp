@@ -196,6 +196,7 @@ void MainApp::Destroy()
 
 void MainApp::LaunchGame()
 {
+    WriteActiveModsToFile();
     // TODO: Make all this stuff work on linux too
     system("cmd.exe /C start steam://rungameid/420290");
 
@@ -245,19 +246,7 @@ void MainApp::SetLoadStatusForMod(std::string modId, bool enabledState)
 {
     enabledMods[modId] = enabledState;
 
-    const wxFileName f(wxStandardPaths::Get().GetExecutablePath());
-    const std::string appPath(f.GetPath() + "/ModsEnabled.txt");
-
-    std::string fileContent;
-
-    const size_t numMods = loadedMods.size();
-    for (size_t i = 0; i < numMods; i++) {
-        fileContent += loadedMods[i].ModName + "=" + (enabledMods[loadedMods[i].ModName] ? "1" : "0") + "\n";
-    }
-
-    std::ofstream ofs(appPath);
-    ofs << fileContent;
-    ofs.close();
+    WriteActiveModsToFile();
 }
 
 std::vector<ModConfig> MainApp::GetMods()
@@ -344,4 +333,21 @@ bool MainApp::InjectDll(DWORD processID, const char* dllPath)
     CloseHandle(hProcess);
 
     return true;
+}
+
+void MainApp::WriteActiveModsToFile()
+{
+    const wxFileName f(wxStandardPaths::Get().GetExecutablePath());
+    const std::string appPath(f.GetPath() + "/ModsEnabled.txt");
+
+    std::string fileContent;
+
+    const size_t numMods = loadedMods.size();
+    for (size_t i = 0; i < numMods; i++) {
+        fileContent += loadedMods[i].ModName + "=" + (enabledMods[loadedMods[i].ModName] ? "1" : "0") + "\n";
+    }
+
+    std::ofstream ofs(appPath);
+    ofs << fileContent;
+    ofs.close();
 }

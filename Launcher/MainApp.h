@@ -45,5 +45,6 @@ private:
 
 	std::vector<ModConfig> loadMods();
 	bool InjectDll(DWORD processID, const char* dllPath);
+	void WriteActiveModsToFile();
 };
 
