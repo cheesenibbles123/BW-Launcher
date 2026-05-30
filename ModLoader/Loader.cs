@@ -21,6 +21,13 @@ namespace ModLoader
                     Directory.CreateDirectory(ModLoader.AssetsPath);
                 }
 
+                string targetPath = Application.dataPath + "/Managed/0Harmony.dll";
+                if (!File.Exists(targetPath))
+                {
+                    string harmonyDll = ModLoader.FolderPath + "0Harmony.dll";
+                    File.Copy(harmonyDll, targetPath);
+                }
+
                 modLogger.DebugLog("Checked Assets");
 
                 ModLoader modLoader = new ModLoader(modLogger);
