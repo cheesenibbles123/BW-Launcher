@@ -3,6 +3,13 @@
 #include <chrono>
 #include <thread>
 
+std::string GetModsEnabledTxtPath()
+{
+    const wxFileName f(wxStandardPaths::Get().GetExecutablePath());
+    const std::string appPath(f.GetPath() + "/ModsEnabled.txt");
+    return appPath;
+}
+
 ModConfig LoadConfigFromJson(std::string path, Logger* logger)
 {
     const std::filesystem::path configFilePath = (path + "/config.json");
@@ -249,10 +256,22 @@ void MainApp::SetLoadStatusForMod(std::string modId, bool enabledState)
     WriteActiveModsToFile();
 }
 
+bool MainApp::IsModEnabled(std::string modId)
+{
+    if (enabledMods.contains(modId))
+    {
+        return enabledMods[modId];
+    }
+
+    // Enable new mods by default, safe to assume if you are adding a new mod, its because you want to launch with it
+    return true;
+}
+
 std::vector<ModConfig> MainApp::GetMods()
 {
     if (loadedMods.size() < 1) {
         loadedMods = loadMods();
+        LoadInitialActiveModsFromFile();
         achievementManager->SetModsReference(&loadedMods);
     }
     return loadedMods;
@@ -335,11 +354,32 @@ bool MainApp::InjectDll(DWORD processID, const char* dllPath)
     return true;
 }
 
+void MainApp::LoadInitialActiveModsFromFile()
+{
+    logger->log("Loading previous enabled mods");
+
+    std::ifstream file(GetModsEnabledTxtPath());
+    std::string line;
+
+    if (file.is_open()) {
+        while (std::getline(file, line)) {
+            const size_t splitCharIdx = line.find('=');
+            std::string modId = line.substr(0, splitCharIdx);
+            bool modEnabled = line.substr(splitCharIdx + 1, line.length()) == "1";
+            enabledMods[modId] = modEnabled;
+        }
+
+        file.close();
+    }
+    else {
+        logger->log("Unable to open modsEnabled txt");
+    }
+
+    logger->log("Loaded previous enabled mods");
+}
+
 void MainApp::WriteActiveModsToFile()
 {
-    const wxFileName f(wxStandardPaths::Get().GetExecutablePath());
-    const std::string appPath(f.GetPath() + "/ModsEnabled.txt");
-
     std::string fileContent;
 
     const size_t numMods = loadedMods.size();
@@ -347,7 +387,7 @@ void MainApp::WriteActiveModsToFile()
         fileContent += loadedMods[i].ModName + "=" + (enabledMods[loadedMods[i].ModName] ? "1" : "0") + "\n";
     }
 
-    std::ofstream ofs(appPath);
+    std::ofstream ofs(GetModsEnabledTxtPath());
     ofs << fileContent;
     ofs.close();
 }

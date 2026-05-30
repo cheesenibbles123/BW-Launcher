@@ -35,6 +35,7 @@ public:
 	void LaunchGame();
 
 	void SetLoadStatusForMod(std::string modId, bool enabledState);
+	bool IsModEnabled(std::string modId);
 
 	std::vector<ModConfig> GetMods();
 	std::thread communicationThread;
@@ -45,6 +46,7 @@ private:
 
 	std::vector<ModConfig> loadMods();
 	bool InjectDll(DWORD processID, const char* dllPath);
+	void LoadInitialActiveModsFromFile();
 	void WriteActiveModsToFile();
 };
 

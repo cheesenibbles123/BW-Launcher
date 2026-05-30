@@ -21,7 +21,7 @@ void MainWindow::CreateModListEntry(wxPanel* panel, wxBoxSizer* parentSizer, Mod
 			mainApp->SetLoadStatusForMod(mod.ModName, isEnabledCheckbox->GetValue());
 		}
 	);
-	isEnabledCheckbox->SetValue(true);
+	isEnabledCheckbox->SetValue(mainApp->IsModEnabled(mod.ModName));
 	isEnabledCheckbox->SetBackgroundColour(CHECKBOX_BACKGROUND_COLOUR);
 	modListEntry->Add(isEnabledCheckbox, 0, wxALIGN_CENTER_VERTICAL);
 
