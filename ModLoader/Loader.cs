@@ -27,7 +27,16 @@ namespace ModLoader
                 ModLoader.Instance = modLoader;
                 modLoader.RefreshModFiles();
 
-                List<string> modsToLoad = GetModsToLoad();
+                List<string> modsToLoad;
+                try
+                {
+                    modsToLoad = GetModsToLoad();
+                }
+                catch
+                {
+                    modsToLoad = new List<string>();
+                    modLogger.DebugLog("Error loading enabled mods txt");
+                }
 
                 foreach (FileInfo fileInfo in modLoader.GetAllMods().Keys)
                 {
