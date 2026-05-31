@@ -2,6 +2,7 @@
 #include "WindowManager.h"
 #include "Custom Components/StyledButton.h"
 #include "Custom Components/DynamicFont.h"
+#include "Custom Components/StyledCheckbox.h"
 #include "../resource.h"
 
 void MainWindow::CreateModListEntry(wxPanel* panel, wxBoxSizer* parentSizer, ModConfig mod, wxColor background)
@@ -15,14 +16,14 @@ void MainWindow::CreateModListEntry(wxPanel* panel, wxBoxSizer* parentSizer, Mod
 	modListEntryWrapper->Add(modListEntry, 1, wxEXPAND | wxALL);
 	modListEntry->Add(15, 0, 0, wxALL);
 
-	wxCheckBox* isEnabledCheckbox = new wxCheckBox(modListEntryPanel, wxID_ANY, "");
+	StyledCheckbox* isEnabledCheckbox = new StyledCheckbox(modListEntryPanel, wxID_ANY, "");
 	isEnabledCheckbox->Bind(wxEVT_CHECKBOX,
 		[this, mod, isEnabledCheckbox](wxCommandEvent& evt) {
 			mainApp->SetLoadStatusForMod(mod.ModName, isEnabledCheckbox->GetValue());
 		}
 	);
 	isEnabledCheckbox->SetValue(mainApp->IsModEnabled(mod.ModName));
-	isEnabledCheckbox->SetBackgroundColour(CHECKBOX_BACKGROUND_COLOUR);
+	isEnabledCheckbox->SetBackground(CHECKBOX_BACKGROUND_COLOUR);
 	modListEntry->Add(isEnabledCheckbox, 0, wxALIGN_CENTER_VERTICAL);
 
 	wxStaticBitmap* modIcon = new wxStaticBitmap();
