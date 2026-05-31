@@ -71,7 +71,7 @@ private:
         // Draw filled bar
         int barWidth = (value * size.x) / range;
         dc.SetBrush(wxBrush(barColour));
-        dc.DrawRectangle(borderWidth, borderWidth, std::clamp(barWidth, 0, size.x - borderWidth), size.y - borderWidth * 2);
+        dc.DrawRectangle(borderWidth, borderWidth, std::clamp(barWidth, 0, size.x - (borderWidth * 2)), size.y - (borderWidth * 2));
 
         if (showProgressText) {
             dc.SetFont(wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString));
