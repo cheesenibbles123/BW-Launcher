@@ -29,6 +29,7 @@ public:
 	void SetMainApp(MainApp* inMainApp);
 private:
 	void OnLaunchGameSelected(wxCommandEvent& evt);
+	void OnLaunchServerSelected(wxCommandEvent& evt);
 	void OnCheckboxSelected(wxCommandEvent& evt);
 	void CreateModListEntry(wxPanel* panel, wxBoxSizer* parentSizer, ModConfig mod, wxColor background);
 };

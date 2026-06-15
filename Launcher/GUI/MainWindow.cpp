@@ -38,15 +38,7 @@ void MainWindow::CreateModListEntry(wxPanel* panel, wxBoxSizer* parentSizer, Mod
 	modAuthorBtn->SetForegroundColour(MAIN_TEXT_COLOUR);
 	modAuthorBtn->SetFont(DynamicFont(DYNAMIC_DEFAULT_FONT_SIZE));
 	modListEntry->Add(modAuthorBtn, 1, wxALIGN_CENTER_VERTICAL);
-	/*
-	StyledButton* modAchievesDeeplinkBtn = new StyledButton(modListEntryPanel, wxID_ANY, "Achievements");
-	modAchievesDeeplinkBtn->SetFont(DynamicFont(DYNAMIC_DEFAULT_FONT_SIZE));
-	modListEntry->Add(modAchievesDeeplinkBtn, 0, wxALL);
 
-	StyledButton* modStatsDeeplinkBtn = new StyledButton(modListEntryPanel, wxID_ANY, "Stats");
-	modStatsDeeplinkBtn->SetFont(DynamicFont(DYNAMIC_DEFAULT_FONT_SIZE));
-	modListEntry->Add(modStatsDeeplinkBtn, 0, wxALL);
-	*/
 	modListEntryWrapper->Add(0, 5, 0, wxALL);
 	modListEntryPanel->SetSizer(modListEntryWrapper);
 	modListEntryPanel->Layout();
@@ -57,6 +49,13 @@ MainWindow::MainWindow(const wxString& title, WindowManager* inWindowManager) : 
 {
 	windowManager = inWindowManager;
 	SetIcons(wxICON(APP_ICON));
+}
+
+void MainWindow::OnLaunchServerSelected(wxCommandEvent& evt)
+{
+	wxLogStatus("Launching Server");
+	mainApp->LaunchServer();
+	wxLogStatus("Server Launched!");
 }
 
 void MainWindow::OnLaunchGameSelected(wxCommandEvent& evt)
@@ -115,11 +114,20 @@ void MainWindow::Populate()
 
 	navigationBarSizer->AddStretchSpacer(1);
 
-	StyledButton* launchGameButton = new StyledButton(panel, wxID_ANY, "Launch Game");
-	launchGameButton->SetFont(DynamicFont(DYNAMIC_DEFAULT_FONT_SIZE));
-	launchGameButton->Bind(wxEVT_BUTTON, &MainWindow::OnLaunchGameSelected, this);
-	navigationBarSizer->Add(launchGameButton);
-	navigationBarSizer->Add(15, 0, 0);
+	if (mainApp->configManager->isServer) {
+		StyledButton* launchServerButton = new StyledButton(panel, wxID_ANY, "Launch Server");
+		launchServerButton->SetFont(DynamicFont(DYNAMIC_DEFAULT_FONT_SIZE));
+		launchServerButton->Bind(wxEVT_BUTTON, &MainWindow::OnLaunchServerSelected, this);
+		navigationBarSizer->Add(launchServerButton);
+		navigationBarSizer->Add(15, 0, 0);
+	}
+	else {
+		StyledButton* launchGameButton = new StyledButton(panel, wxID_ANY, "Launch Game");
+		launchGameButton->SetFont(DynamicFont(DYNAMIC_DEFAULT_FONT_SIZE));
+		launchGameButton->Bind(wxEVT_BUTTON, &MainWindow::OnLaunchGameSelected, this);
+		navigationBarSizer->Add(launchGameButton);
+		navigationBarSizer->Add(15, 0, 0);
+	}
 
 	mainSizer->Add(navigationBarSizer, 0, wxEXPAND);
 	mainSizer->Add(0, 15, 0, wxEXPAND);

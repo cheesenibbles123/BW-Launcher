@@ -249,6 +249,61 @@ void MainApp::LaunchGame()
     }
 }
 
+void MainApp::LaunchServer()
+{
+    WriteActiveModsToFile();
+    // TODO: Make all this stuff work on linux too
+    if (!configManager) {
+        return logger->log("Error loading config, please restart the app!");
+    }
+    std::string path = configManager->serverExePath;
+    if (path.length() < 1) {
+        return logger->log("Please provide a valid path");
+    }
+    system(("cd /d " + path + " && launch.bat").c_str());
+
+    std::vector<std::string> dlls = { "dllMain.dll" };
+    char dllFullPath[MAX_PATH] = { 0 };
+    const int MAX_COUNTER_RUNS = 300;
+    int pid;
+    int counter;
+
+    // TODO: Split this up, there's no need to be refetching the processID everytime
+    counter = 0;
+    while (counter < MAX_COUNTER_RUNS) {
+        pid = Lib::GetProcessId(L"BlackwakeServer.exe");
+        if (pid != 0) {
+            break;
+        }
+
+        logger->log("Failed to get pid, trying again...");
+        counter++;
+        Sleep(300);
+    }
+
+    // NOTE: Injecting too soon just instant crashes the title
+    // TODO: Find a better way than some arbritary delay (Likely to still have issues on slower systems)
+    Sleep(10000);
+
+    for (size_t i = 0; i < dlls.size(); i++)
+    {
+        counter = 0;
+        GetFullPathNameA(dlls.at(i).c_str(), MAX_PATH, dllFullPath, NULL);
+
+        while (counter < MAX_COUNTER_RUNS)
+        {
+            if (InjectDll(pid, dllFullPath)) {
+                logger->log(dlls.at(i) + " injected successfully");
+                break;
+            }
+
+            logger->log(dlls.at(i) + " injection failed, running attempt: " + std::to_string(counter));
+            counter++;
+            Sleep(300);
+        }
+    }
+}
+
 void MainApp::SetLoadStatusForMod(std::string modId, bool enabledState)
 {
     enabledMods[modId] = enabledState;

@@ -33,6 +33,7 @@ public:
 
 	void Destroy();
 	void LaunchGame();
+	void LaunchServer();
 
 	void SetLoadStatusForMod(std::string modId, bool enabledState);
 	bool IsModEnabled(std::string modId);

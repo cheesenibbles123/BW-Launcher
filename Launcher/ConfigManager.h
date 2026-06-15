@@ -8,7 +8,8 @@
 enum configOption {
 	windowHeight,
 	windowWidth,
-	blackwakeExeFilePath
+	serverExePath,
+	isServer
 };
 
 class ConfigManager
@@ -16,7 +17,8 @@ class ConfigManager
 public:
 	int windowHeight = 200;
 	int windowWidth = 500;
-	std::string blackwakeExeFilePath = "Not Set";
+	bool isServer = false;
+	std::string serverExePath = "";
 
 	ConfigManager();
 
@@ -30,7 +32,8 @@ private:
 	{
 		{ "windowHeight", configOption::windowHeight },
 		{ "windowWidth", configOption::windowWidth },
-		{ "blackwakeExeFilePath", configOption::blackwakeExeFilePath }
+		{ "serverExePath", configOption::serverExePath },
+		{ "isServer", configOption::isServer },
 	};
 	std::string configFilePath = "configFile.cfg";
 	const char commentCharacter = '#';

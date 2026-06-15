@@ -33,8 +33,11 @@ void ConfigManager::readConfig()
 					case configOption::windowHeight:
 						windowHeight = std::stoi(value);
 						break;
-					case configOption::blackwakeExeFilePath:
-						blackwakeExeFilePath = value;
+					case configOption::serverExePath:
+						serverExePath = value;
+						break;
+					case configOption::isServer:
+						isServer = value == "1";
 						break;
 					default:
 						break;
