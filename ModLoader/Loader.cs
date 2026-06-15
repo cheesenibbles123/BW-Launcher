@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace ModLoader
@@ -37,7 +38,8 @@ namespace ModLoader
                 List<string> modsToLoad;
                 try
                 {
-                    modsToLoad = GetModsToLoad();
+                    modsToLoad = GetModsToLoad(modLogger);
+                    modLogger.DebugLog("Got mods" + modsToLoad.ToString());
                 }
                 catch
                 {
@@ -47,6 +49,8 @@ namespace ModLoader
 
                 foreach (FileInfo fileInfo in modLoader.GetAllMods().Keys)
                 {
+                    modLogger.DebugLog("Checking mod: " + fileInfo.Name + " (" + fileInfo.Name.Split('.')[0] + ")");
+
                     if (fileInfo.Name[0] != '_' && modsToLoad.Contains(fileInfo.Name.Split('.')[0]))
                     {
                         modLoader.Load(fileInfo);
@@ -62,7 +66,7 @@ namespace ModLoader
             });
         }
 
-        static List<string> GetModsToLoad()
+        static List<string> GetModsToLoad(Logger modLogger)
         {
             List<string> modsToLoad = new List<string>();
 
@@ -80,6 +84,8 @@ namespace ModLoader
                 if (allLines[i].Contains("="))
                 {
                     string[] line = allLines[i].Split(splitCharacter);
+                    modLogger.DebugLog("Checking: " + line[0] + "-" + line[1] + " (" + line.Length + ")");
+                    modLogger.DebugLog("isEnabled: " + (line[1] == "1").ToString());
 
                     if (line.Length == 2)
                     {

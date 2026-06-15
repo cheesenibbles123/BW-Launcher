@@ -17,11 +17,18 @@ namespace Tools
                     clientSocket = new TcpClient();
                 }
 
+                try
+                {
                 clientSocket.Connect("127.0.0.1", 54000);
 
                 AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
 
                 sendMessage("Hello from game client!");
+
+                } catch(Exception e)
+                {
+                    UnityEngine.Debug.Log("Got error setting up socket connection " + e.Message);
+                }
             } else
             {
                 UnityEngine.Debug.Log("Called CommunicationPipes.init() with a socket already present");
